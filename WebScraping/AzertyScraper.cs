@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WebScraping
@@ -75,7 +76,15 @@ namespace WebScraping
         {
             IWebElement image = cardElement.FindElement(By.CssSelector(".object-contain.product-image-photo"));
 
+            string pattern = @"(.*\.(jpg|jpeg|png))";
             string imageUrl = image.GetAttribute("src");
+
+            Match match = Regex.Match(imageUrl, pattern);
+
+            if (match.Success)
+            {
+                imageUrl = match.Groups[1].Value;
+            }
 
             return imageUrl;
         }
@@ -83,10 +92,12 @@ namespace WebScraping
         public static void CreateProducts()
         {
             var products = driver.FindElements(By.CssSelector(".item.product.product-item.product_addtocart_form.card"));
-            Console.WriteLine($"Products {products.Count} products");
+
             for (int i = 0; i < 5; i++)
             {
                 IWebElement productFound = products[i];
+
+                // Create Product objects from search results
                 Product ShoppingProduct= new Product();
 
                 ShoppingProduct.Name = GetProductName(productFound);
@@ -107,14 +118,6 @@ namespace WebScraping
             {
                 Product FoundProduct = productList[i];
 
-                //Console.WriteLine($"*---------------------------------------------*");
-                //Console.WriteLine($"| Product: {FoundProduct.Name} - {FoundProduct.Price}");
-                //Console.WriteLine($"| Description: {FoundProduct.Description} ");
-                //Console.WriteLine($"| Delivery time: {FoundProduct.DeliveryTime}");
-                //Console.WriteLine($"| URL: {FoundProduct.Url}");
-                //Console.WriteLine($"| Product image: {FoundProduct.ImageUrl}");
-                //Console.WriteLine($"*---------------------------------------------*\n");
-
                 Console.WriteLine($"*---------------------------------------------*\n" +
                   $"| Product: {FoundProduct.Name} - {FoundProduct.Price}\n" +
                   $"| Description: {FoundProduct.Description}\n" +
@@ -122,15 +125,19 @@ namespace WebScraping
                   $"| URL: {FoundProduct.Url}\n" +
                   $"| Product image: {FoundProduct.ImageUrl}\n" +
                   $"*---------------------------------------------*");
-
             }
         }
 
         private static void RefuseCookies()
         {
+            // Wait for banner animation (ease-in)
             Thread.Sleep(3000);
+            
+            // Find button and click on reject
             var cookieRefuseButton = driver.FindElement(By.Id("CybotCookiebotDialogBodyButtonDecline"));
             cookieRefuseButton.Click();
+            
+            // Wait for banner animation (ease-out)
             Thread.Sleep(3000);
         }
 
@@ -140,12 +147,21 @@ namespace WebScraping
             string scrapingUrl = $"https://azerty.nl/catalogsearch/result/?q={searchTerm}";
             driver.Navigate().GoToUrl(scrapingUrl);
             
+            // Refuse cookie banner to proceed with scraping
             RefuseCookies();
 
+            // Call methods to create Product objects
             CreateProducts();
+            
+            // Console.WriteLine Products
             showProducts();
 
             driver.Quit();
+
+            Menu homeMenu = new Menu();
+            MenuHandler menuHandler = new MenuHandler(homeMenu);
+
+            menuHandler.ProcessUserSelection();
         }
     }
 }

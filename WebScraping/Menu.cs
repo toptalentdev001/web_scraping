@@ -51,7 +51,13 @@ namespace WebScraping
                     Console.WriteLine("[!] Invalid selection. Please choose from the available options.");
                 }
 
-            } while (!possibleChoices.ContainsKey(parsedSelection));
+                if (parsedSelection == 69)
+                {
+                    Console.Clear();
+                    return "69";
+                }
+
+            } while (!(possibleChoices.ContainsKey(parsedSelection)) && parsedSelection != 69);
 
             return possibleChoices[parsedSelection];
         }

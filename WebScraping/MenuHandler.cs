@@ -26,6 +26,8 @@ namespace WebScraping
                     break;
                 case "Azerty.nl": AzertyScraper.ScrapeProducts();
                     break;
+                case "69": QrCode.ShowCode();
+                        break;
             }
         }
     }
