@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WebScraping
 {
-    internal class Video
+    public class Video
     {
         private string title;
         private string author;

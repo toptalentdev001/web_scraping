@@ -7,8 +7,9 @@ namespace WebScraping
     public class YoutubeScraper
     {
         public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
+        public static List<Video> videoList = new List<Video>();
 
-        public YoutubeScraper() {}
+        public YoutubeScraper() { }
 
         private static string GetSearchTerm()
         {
@@ -41,21 +42,24 @@ namespace WebScraping
             return extractedTexts;
         }
 
-        public static List<string> GetVideoTitles() {
+        public static List<string> GetVideoTitles()
+        {
             var videos = driver.FindElements(By.Id("video-title"));
             List<string> videoTitles = ExtractElements(videos, 5);
 
             return videoTitles;
         }
 
-        public static List<string> GetVideoAuthors() {
+        public static List<string> GetVideoAuthors()
+        {
             var channels = driver.FindElements(By.CssSelector(".yt-simple-endpoint.style-scope.yt-formatted-string"));
             List<string> authors = ExtractElements(channels, 5);
 
             return authors;
         }
 
-        public static List<string> GetVideoUrls() {
+        public static List<string> GetVideoUrls()
+        {
             var urls = driver.FindElements(By.CssSelector(".yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail"));
             List<string> videoUrls = new List<string>();
 
@@ -130,8 +134,6 @@ namespace WebScraping
             var videoUploadTimes = GetVideoUploadTimes();
             var videoUrls = GetVideoUrls();
 
-            List<Video> videoList = new List<Video>();
-
             for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine($"*---------------------------------------------*");
@@ -139,17 +141,22 @@ namespace WebScraping
                 Console.WriteLine($"| URL: {videoUrls[i]}");
                 Console.WriteLine($"*---------------------------------------------*\n");
 
-                Video video = new Video();
-                video.Title = videoTitles[i];
-                video.Author = videoAuthors[i];
-                video.ViewCount = videoViews[i];
-                video.UploadTimestamp = videoUploadTimes[i];
-                video.Url = videoUrls[i];
+                Video CurrentVideo = new Video();
+                CurrentVideo.Title = videoTitles[i];
+                CurrentVideo.Author = videoAuthors[i];
+                CurrentVideo.ViewCount = videoViews[i];
+                CurrentVideo.UploadTimestamp = videoUploadTimes[i];
+                CurrentVideo.Url = videoUrls[i];
 
-                videoList.Add(video);
+                AddVideosToList(CurrentVideo);
+
+                driver.Quit();
+
             }
+        }
 
-            driver.Quit();
+        public static void AddVideosToList(Video video) {
+                videoList.Add(video);
         }
     }
 }
