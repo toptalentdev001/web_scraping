@@ -24,7 +24,7 @@ namespace WebScraping
                     break;
                 case "Ictjobs.be": IctjobsScraper.ScrapeJobs();
                     break;
-                case "Azerty.nl": Console.WriteLine("Azerty.nl");
+                case "Azerty.nl": AzertyScraper.ScrapeProducts();
                     break;
             }
         }

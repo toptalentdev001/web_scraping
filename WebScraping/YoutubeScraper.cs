@@ -20,7 +20,7 @@ namespace WebScraping
                 Console.Write("\nEnter a search term: ");
                 searchTerm = Console.ReadLine();
 
-            } while (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm));
+            } while (string.IsNullOrEmpty(searchTerm) && string.IsNullOrWhiteSpace(searchTerm));
 
             Console.WriteLine($"\nSearching for {searchTerm} on Youtube ...\n");
 

@@ -13,7 +13,7 @@ namespace WebScraping
         public static IWebDriver InitializeChromeDriver()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("--headless", "--silent", "log-level=3");
+            chromeOptions.AddArguments("--silent", "log-level=3");
 
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
