@@ -22,7 +22,7 @@ namespace WebScraping
             {
                 case "Youtube": YoutubeScraper.ScrapeVideos();
                     break;
-                case "Ictjobs.be": Console.WriteLine("Ictjobs.be");
+                case "Ictjobs.be": IctjobsScraper.ScrapeJobs();
                     break;
                 case "Azerty.nl": Console.WriteLine("Azerty.nl");
                     break;
