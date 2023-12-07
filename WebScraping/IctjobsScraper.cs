@@ -127,6 +127,7 @@ namespace WebScraping
                 Console.WriteLine($"| URL: {vacancyUrls[i]}");
                 Console.WriteLine($"*---------------------------------------------*\n");
 
+                // Create Job objects
                 Job jobOpportunity = new Job();
                 jobOpportunity.Title = vacancies[i];
                 jobOpportunity.Company = hiringOrganizations[i];
@@ -134,9 +135,15 @@ namespace WebScraping
                 jobOpportunity.DatePosted = datesPosted[i];
                 jobOpportunity.DetailsUrl = vacancyUrls[i];
 
+                // Add Jobs to list of jobs
                 AddJobsToList(jobOpportunity);
             }
+
             driver.Quit();
+
+            // Ask for menu
+            MenuHandler menuHandler = new();
+            menuHandler.AskForMenu();
         }
 
         public static void AddJobsToList(Job job)

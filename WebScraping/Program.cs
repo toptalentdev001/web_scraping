@@ -24,11 +24,12 @@ public static class HelloSelenium
         var welcome = "[i] Welcome to the DevOps Web Scraper!\n";
         var welcomePadded = welcome.PadLeft(10, ' ').PadRight(10, ' ');
         Console.WriteLine(welcomePadded);
+        
+        // Display menu and process selection
         Menu menu = new Menu();
-        MenuHandler menuHandler = new MenuHandler(menu);
+        MenuHandler menuHandler = new();
 
         menu.Display();
         menuHandler.ProcessUserSelection();
-
     }
 }

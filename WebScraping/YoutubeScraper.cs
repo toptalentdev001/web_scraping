@@ -149,10 +149,13 @@ namespace WebScraping
                 CurrentVideo.Url = videoUrls[i];
 
                 AddVideosToList(CurrentVideo);
-
-                driver.Quit();
-
             }
+
+            driver.Quit();
+
+            // Ask for menu
+            MenuHandler menuHandler = new();
+            menuHandler.AskForMenu();
         }
 
         public static void AddVideosToList(Video video) {

@@ -2,64 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WebScraping
+namespace WebScraping;
+internal class Menu
 {
-    internal class Menu
+    private static readonly Dictionary<int, string> possibleChoices = new Dictionary<int, string> {
+            {1, "Youtube"},
+            {2, "Ictjobs.be"},
+            {3, "Azerty.nl"}
+    };
+
+    public Menu() { }
+
+    public void Display()
     {
-        private static readonly Dictionary<int, string> possibleChoices = new Dictionary<int, string> {
-                {1, "Youtube"},
-                {2, "Ictjobs.be"},
-                {3, "Azerty.nl"}
-        };
-
-        public Menu() { }
-
-        public void Display()
+        Console.WriteLine("Choose a website to scrape:\n");
+        foreach (var choice in possibleChoices)
         {
-            Console.WriteLine("Choose a website to scrape:\n");
-            foreach (var choice in possibleChoices)
+            Console.WriteLine($"{choice.Key}: {choice.Value}");
+        }
+        Console.Write("\n");
+    }
+
+    public string GetUserSelection()
+    {
+        int parsedSelection;
+
+        do
+        {
+            Console.Write("[?] Enter your choice: ");
+            string selection = Console.ReadLine();
+
+            if (selection is not null && selection.ToLower() == "s")
             {
-                Console.WriteLine($"{choice.Key}: {choice.Value}");
+                // If the user enters 's', exit the loop and the program
+                Console.WriteLine("Goodbye...");
+                Environment.Exit(0);
             }
-            Console.Write("\n");
-        }
 
-        public string GetUserSelection()
-        {
-            int parsedSelection;
-
-            do
+            if (!int.TryParse(selection, out parsedSelection))
             {
-                Console.Write("Enter your choice: ");
-                string selection = Console.ReadLine();
+                Console.WriteLine("[!] Invalid input. Please enter a valid number.");
+                continue; // Skip the rest of the loop iteration
+            }
 
-                if (selection is not null && selection.ToLower() == "s")
-                {
-                    // If the user enters 's', exit the loop and the program
-                    Console.WriteLine("Goodbye...");
-                    Environment.Exit(0);
-                }
+            if (!possibleChoices.ContainsKey(parsedSelection))
+            {
+                Console.WriteLine("[!] Invalid selection. Please choose from the available options.");
+            }
 
-                if (!int.TryParse(selection, out parsedSelection))
-                {
-                    Console.WriteLine("[!] Invalid input. Please enter a valid number.");
-                    continue; // Skip the rest of the loop iteration
-                }
+            if (parsedSelection == 69)
+            {
+                Console.Clear();
+                return "69";
+            }
 
-                if (!possibleChoices.ContainsKey(parsedSelection))
-                {
-                    Console.WriteLine("[!] Invalid selection. Please choose from the available options.");
-                }
+        } while (!(possibleChoices.ContainsKey(parsedSelection)) && parsedSelection != 69);
 
-                if (parsedSelection == 69)
-                {
-                    Console.Clear();
-                    return "69";
-                }
-
-            } while (!(possibleChoices.ContainsKey(parsedSelection)) && parsedSelection != 69);
-
-            return possibleChoices[parsedSelection];
-        }
+        return possibleChoices[parsedSelection];
     }
 }
