@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
 
 namespace WebScraping
 {
@@ -137,10 +135,14 @@ namespace WebScraping
             for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine($"*---------------------------------------------*");
-                Console.WriteLine($"| {videoTitles[i]} | Uploaded by: {videoAuthors[i]} | Views: {videoViews[i]} - {videoUploadTimes[i]}");
+                Console.WriteLine($"| {videoTitles[i]}");
+                Console.WriteLine($"| Uploaded by: {videoAuthors[i]}");
+                Console.WriteLine($"| Views: {videoViews[i]}");
+                Console.WriteLine($"| {videoUploadTimes[i]}");
                 Console.WriteLine($"| URL: {videoUrls[i]}");
                 Console.WriteLine($"*---------------------------------------------*\n");
 
+                // Create Video objects and add to list
                 Video CurrentVideo = new Video();
                 CurrentVideo.Title = videoTitles[i];
                 CurrentVideo.Author = videoAuthors[i];
@@ -158,8 +160,9 @@ namespace WebScraping
             menuHandler.AskForMenu();
         }
 
-        public static void AddVideosToList(Video video) {
-                videoList.Add(video);
+        public static void AddVideosToList(Video video)
+        {
+            videoList.Add(video);
         }
     }
 }
