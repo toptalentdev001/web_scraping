@@ -47,7 +47,7 @@ internal class Menu
 
             if (!possibleChoices.ContainsKey(parsedSelection))
             {
-                Console.WriteLine("[!] Invalid selection. Please choose from the available options.");
+                Console.WriteLine("[!] Invalid input. Please choose from the available options.");
             }
 
             if (parsedSelection == 69)

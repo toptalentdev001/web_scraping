@@ -30,20 +30,28 @@ internal class MenuHandler
     public void AskForMenu()
     {
         string decision;
+        bool isToBeContinued = true;
 
-        do
+        while (isToBeContinued)
         {
             Console.Write("\nDo you want to try another option? (Y/N) ");
-            decision = Console.ReadLine();
+            decision = Console.ReadLine().ToLower(); // Convert to lowercase immediately
 
-            if (!string.IsNullOrWhiteSpace(decision) && decision.Equals("y")) {
+            if (decision.Equals("y"))
+            {
                 menu.Display();
                 ProcessUserSelection();
-            } else
+            }
+            else if (decision.Equals("n"))
             {
                 Console.WriteLine("Thanks for using the DevOps Web Scraper! :)");
+                isToBeContinued = false; // Stop the loop from continuing
             }
-
-        } while (string.IsNullOrWhiteSpace(decision));
+            else
+            {
+                Console.WriteLine("[!] Invalid input. Please choose from the available options.");
+                continue;
+            }   
+        }
     }
 }
