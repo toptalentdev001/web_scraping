@@ -6,6 +6,14 @@ namespace WebScraping
     {
         public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
         public static List<Video> videoList = new List<Video>();
+        public static List<string> videoDetails = new List<string>
+        {
+            "Title",
+            "Author",
+            "ViewCount",
+            "UploadTimestamp",
+            "Url"
+        };
 
         public YoutubeScraper() { }
 
@@ -15,12 +23,12 @@ namespace WebScraping
 
             do
             {
-                Console.Write("\nEnter a search term: ");
+                Console.Write("\nEnter a search term (Youtube): ");
                 searchTerm = Console.ReadLine();
 
             } while (string.IsNullOrEmpty(searchTerm) && string.IsNullOrWhiteSpace(searchTerm));
 
-            Console.WriteLine($"\nSearching for {searchTerm} on Youtube ...\n");
+            Console.WriteLine($"\nSearching for \"{searchTerm}\" on Youtube ...\n");
 
             return searchTerm;
         }
@@ -115,16 +123,20 @@ namespace WebScraping
 
             return videoUploadTimestamps;
         }
+        public static void AddVideosToList(Video video)
+        {
+            videoList.Add(video);
+        }
 
         public static void ScrapeVideos()
         {
             string youtubeSearchTerm = GetSearchTerm();
-            //driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}");
+
+            // Most popular search results
+            driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}");
 
             // Most recent search results
-            driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}&sp=CAI%253D");
-
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            //driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}&sp=CAI%253D");
 
             var videoTitles = GetVideoTitles();
             var videoViews = GetVideoViews();
@@ -135,10 +147,9 @@ namespace WebScraping
             for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine($"*---------------------------------------------*");
-                Console.WriteLine($"| {videoTitles[i]}");
-                Console.WriteLine($"| Uploaded by: {videoAuthors[i]}");
+                Console.WriteLine($"| Titel: {videoTitles[i]} - {videoAuthors[i]}");
                 Console.WriteLine($"| Views: {videoViews[i]}");
-                Console.WriteLine($"| {videoUploadTimes[i]}");
+                Console.WriteLine($"| Geüpload: {videoUploadTimes[i]}");
                 Console.WriteLine($"| URL: {videoUrls[i]}");
                 Console.WriteLine($"*---------------------------------------------*\n");
 
@@ -153,16 +164,8 @@ namespace WebScraping
                 AddVideosToList(CurrentVideo);
             }
 
-            driver.Quit();
-
-            // Ask for menu
-            MenuHandler menuHandler = new();
-            menuHandler.AskForMenu();
-        }
-
-        public static void AddVideosToList(Video video)
-        {
-            videoList.Add(video);
+            // Save data to CSV file
+                ExportCsv.CreateCsvFile("videos.csv", videoList, videoDetails);
         }
     }
 }

@@ -8,7 +8,7 @@ using OpenQA.Selenium;
 
 namespace WebScraping
 {
-    internal class WebDriverFactory
+    public class WebDriverFactory
     {
         public static IWebDriver InitializeChromeDriver()
         {
@@ -21,6 +21,14 @@ namespace WebScraping
             chromeDriverService.EnableVerboseLogging = false;
 
             return new ChromeDriver(chromeDriverService, chromeOptions);
+        }
+
+        public static void QuitDriver(IWebDriver driver)
+        {
+            if (driver != null)
+            {
+                driver.Quit();
+            }
         }
     }
 }

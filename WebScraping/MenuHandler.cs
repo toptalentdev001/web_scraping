@@ -1,29 +1,73 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace WebScraping;
-internal class MenuHandler
+public class Menu
 {
-    public Menu menu = new();
-        
-    public MenuHandler() {}
+    public static readonly Dictionary<int, string> possibleChoices = new Dictionary<int, string> {
+            {1, "Youtube"},
+            {2, "Ictjobs.be"},
+            {3, "Azerty.nl"}
+    };
+
+    public string userChoice;
+
+    public Menu() {}
+
+    public void Display()
+    {
+        Console.WriteLine("[?] Choose a website to scrape:\n");
+        foreach (var choice in possibleChoices)
+        {
+            Console.WriteLine($"{choice.Key}: {choice.Value}");
+        }
+        Console.Write("\n");
+    }
 
     public void ProcessUserSelection()
     {
-        string userSelection = menu.GetUserSelection();
-
-        switch (userSelection)
+        int parsedSelection;
+        do
         {
-            case "Youtube": YoutubeScraper.ScrapeVideos();
+            Console.Write("[?] Enter your choice: ");
+            string selection = Console.ReadLine();
+
+            if (!int.TryParse(selection, out parsedSelection))
+            {
+                Console.WriteLine("[!] Invalid input. Please enter a valid number.");
+                continue;
+            }
+
+            if (!possibleChoices.ContainsKey(parsedSelection))
+            {
+                Console.WriteLine("[!] Invalid input. Please choose from the available options.");
+            }
+
+            if (parsedSelection == 69)
+            {
+                Console.Clear();
                 break;
-            case "Ictjobs.be": IctjobsScraper.ScrapeJobs();
+            }
+
+        } while (!possibleChoices.ContainsKey(parsedSelection));
+
+        switch (parsedSelection)
+        {
+            case 1:
+                YoutubeScraper.ScrapeVideos();
                 break;
-            case "Azerty.nl": AzertyScraper.ScrapeProducts();
+            case 2:
+                IctjobsScraper.ScrapeJobs();
                 break;
-            case "69": QrCode.PrintQRCode();
-                    break;
+            case 3:
+                AzertyScraper.ScrapeProducts();
+                break;
+            case 69:
+                QrCode.PrintQRCode();
+                break;
         }
     }
 
@@ -34,24 +78,26 @@ internal class MenuHandler
 
         while (isToBeContinued)
         {
-            Console.Write("\nDo you want to try another option? (Y/N) ");
+            Console.Write("\n[?] Do you want to try another option? (Y/N): ");
             decision = Console.ReadLine().ToLower(); // Convert to lowercase immediately
 
             if (decision.Equals("y"))
             {
-                menu.Display();
+                // Reset userChoice before processing the selection again
+                userChoice = "";
+                Display();
                 ProcessUserSelection();
             }
             else if (decision.Equals("n"))
             {
-                Console.WriteLine("Thanks for using the DevOps Web Scraper! :)");
+                Console.WriteLine("\nThanks for using the DevOps Web Scraper! :)");
                 isToBeContinued = false; // Stop the loop from continuing
             }
             else
             {
                 Console.WriteLine("[!] Invalid input. Please choose from the available options.");
                 continue;
-            }   
+            }
         }
     }
 }

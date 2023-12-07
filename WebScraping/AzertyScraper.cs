@@ -10,8 +10,17 @@ namespace WebScraping;
 public class AzertyScraper
 {
     public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
-    public static List<Product> productList = new List<Product>();
-        
+    public static  List<Product> productList = new List<Product>();
+    public static List<string> productDetails = new List<string>
+    {
+        "Name",
+        "Price",
+        "Description",
+        "DeliveryTime",
+        "Url",
+        "ImageUrl"
+    };
+
     AzertyScraper() { }
     private static string GetSearchTerm()
     {
@@ -19,12 +28,12 @@ public class AzertyScraper
 
         do
         {
-            Console.Write("\nEnter a search term: ");
+            Console.Write("\nEnter a search term (Azerty.nl): ");
             searchTerm = Console.ReadLine();
 
         } while (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm));
 
-        Console.WriteLine($"\nSearching for {searchTerm} on Azerty.nl ...\n");
+        Console.WriteLine($"\nSearching for \"{searchTerm}\" on Azerty.nl ...\n");
 
         return searchTerm;
     }
@@ -47,7 +56,7 @@ public class AzertyScraper
     {
         var price = cardElement.FindElement(By.CssSelector(".price"));
 
-        decimal productPrice = decimal.Parse(price.Text, CultureInfo.InvariantCulture);
+        decimal productPrice = decimal.Parse(price.Text, CultureInfo.CurrentCulture);
 
         return productPrice;
     }
@@ -104,7 +113,7 @@ public class AzertyScraper
             ShoppingProduct.DeliveryTime = GetDeliveryTime(productFound);
             ShoppingProduct.Url = GetProductUrl(productFound);
             ShoppingProduct.ImageUrl = GetProductImage(productFound);
-                
+
             // Add product to lists
             productList.Add(ShoppingProduct);
         }
@@ -117,7 +126,7 @@ public class AzertyScraper
             Product FoundProduct = productList[i];
 
             Console.WriteLine($"*---------------------------------------------*\n" +
-                $"| Product: {FoundProduct.Name} - {FoundProduct.Price}\n" +
+                $"| Product: {FoundProduct.Name} - €{FoundProduct.Price}\n" +
                 $"| Description: {FoundProduct.Description}\n" +
                 $"| Delivery time: {FoundProduct.DeliveryTime}\n" +
                 $"| URL: {FoundProduct.Url}\n" +
@@ -155,11 +164,7 @@ public class AzertyScraper
         // Console.WriteLine Products
         showProducts();
 
-        // Close driver
-        driver.Quit();
-
-        // Ask for menu
-        MenuHandler menuHandler = new();
-        menuHandler.AskForMenu();
+        // Create CSV file from products
+        ExportCsv.CreateCsvFile("products.csv", productList, productDetails);
     }
 }

@@ -13,7 +13,7 @@ internal class QrCode
         string qrCodeAscii = GenerateQRCode(inputText);
 
         // Display QR code in the console
-        Console.WriteLine("!!!!!! Scan this super secure QR Code, 100% totally not a virus !!!!!");
+        Console.WriteLine("\n\n\n!!!!!! Scan this super secure QR Code, 100% totally not a virus !!!!!");
         Console.WriteLine(qrCodeAscii);
     }
 
@@ -32,9 +32,5 @@ internal class QrCode
     {
         // Console Write QR code
         WriteQrCode();
-
-        // Show menu and process input
-        MenuHandler menuHandler = new();
-        menuHandler.AskForMenu();     
     }
 }

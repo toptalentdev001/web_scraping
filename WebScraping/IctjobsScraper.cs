@@ -13,8 +13,17 @@ namespace WebScraping
 {
     public class IctjobsScraper
     {
+     
         public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
         public static List<Job> jobsList = new List<Job>();
+        public static List<string> jobDetails = new List<string>
+        {
+            "Title",
+            "Company",
+            "Location",
+            "DatePosted",
+            "DetailsUrl"
+        };
 
         public IctjobsScraper() {}
 
@@ -24,12 +33,12 @@ namespace WebScraping
 
             do
             {
-                Console.Write("\nEnter a search term: ");
+                Console.Write("\nEnter a search term (Ictjobs.be): ");
                 searchTerm = Console.ReadLine();
 
             } while (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm));
 
-            Console.WriteLine($"\nSearching for {searchTerm} on Ictjob.be ...\n");
+            Console.WriteLine($"\nSearching for \"{searchTerm}\" on Ictjob.be ...\n");
 
             return searchTerm;
         }
@@ -99,6 +108,11 @@ namespace WebScraping
             return jobUrls;
         }
 
+        public static void AddJobsToList(Job job)
+        {
+            jobsList.Add(job);
+        }
+
         public static void ScrapeJobs()
         {
             string jobSearchTerm = GetSearchTerm();
@@ -139,16 +153,8 @@ namespace WebScraping
                 AddJobsToList(jobOpportunity);
             }
 
-            driver.Quit();
-
-            // Ask for menu
-            MenuHandler menuHandler = new();
-            menuHandler.AskForMenu();
-        }
-
-        public static void AddJobsToList(Job job)
-        {
-            jobsList.Add(job);
+            // Create CSV 
+            ExportCsv.CreateCsvFile("jobs.csv", jobsList, jobDetails);
         }
     }
 }
