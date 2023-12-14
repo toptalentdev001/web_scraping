@@ -29,6 +29,9 @@ namespace WebScraping
 
             Console.WriteLine($"\nSearching for \"{searchTerm}\" on Youtube ...\n");
 
+            // Encode special characters
+            searchTerm = Uri.EscapeDataString(searchTerm);
+
             return searchTerm;
         }
 

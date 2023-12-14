@@ -34,6 +34,9 @@ public class AzertyScraper
 
         Console.WriteLine($"\nSearching for \"{searchTerm}\" on Azerty.nl ...\n");
 
+        // Encode special characters
+        searchTerm = Uri.EscapeDataString(searchTerm);
+
         return searchTerm;
     }
 

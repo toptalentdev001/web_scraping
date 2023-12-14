@@ -37,6 +37,9 @@ namespace WebScraping
             } while (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm));
 
             Console.WriteLine($"\nSearching for \"{searchTerm}\" on Ictjob.be ...\n");
+            
+            // Encode special characters
+            searchTerm = Uri.EscapeDataString(searchTerm);
 
             return searchTerm;
         }
