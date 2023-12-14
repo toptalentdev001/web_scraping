@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 namespace WebScraping;
 public class AzertyScraper
 {
-    public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
     public static  List<Product> productList = new List<Product>();
     public static List<string> productDetails = new List<string>
     {
@@ -21,14 +20,14 @@ public class AzertyScraper
         "ImageUrl"
     };
 
-    AzertyScraper() { }
+    AzertyScraper() { }     
     private static string GetSearchTerm()
     {
         string searchTerm;
 
         do
         {
-            Console.Write("\nEnter a search term (Azerty.nl): ");
+            Console.Write("\n[?] Enter a search term (Azerty.nl): ");
             searchTerm = Console.ReadLine();
 
         } while (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm));
@@ -96,7 +95,7 @@ public class AzertyScraper
         return imageUrl;
     }
 
-    public static void CreateProducts()
+    public static void CreateProducts(IWebDriver driver)
     {
         var products = driver.FindElements(By.CssSelector(".item.product.product-item.product_addtocart_form.card"));
 
@@ -135,7 +134,7 @@ public class AzertyScraper
         }
     }
 
-    private static void RefuseCookies()
+    private static void RefuseCookies(IWebDriver driver)
     {
         // Wait for banner animation (ease-in)
         Thread.Sleep(3000);
@@ -150,21 +149,26 @@ public class AzertyScraper
 
     public static void ScrapeProducts()
     {
+        IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
+
         // Go to website
         string searchTerm = GetSearchTerm();
         string scrapingUrl = $"https://azerty.nl/catalogsearch/result/?q={searchTerm}";
         driver.Navigate().GoToUrl(scrapingUrl);
             
         // Refuse cookie banner to proceed with scraping
-        RefuseCookies();
+        RefuseCookies(driver);
 
         // Call methods to create Product objects
-        CreateProducts();
+        CreateProducts(driver);
             
         // Console.WriteLine Products
         showProducts();
 
         // Create CSV file from products
         ExportCsv.CreateCsvFile("products.csv", productList, productDetails);
+
+        // Quit driver
+        WebDriverFactory.QuitDriver(driver);
     }
 }

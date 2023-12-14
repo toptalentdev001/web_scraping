@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Figgle;
 
 namespace WebScraping;
 public class Menu
@@ -19,12 +20,11 @@ public class Menu
 
     public void Display()
     {
-        Console.WriteLine("[?] Choose a website to scrape:\n");
+        Console.WriteLine("[i] Choose a website to scrape:\n");
         foreach (var choice in possibleChoices)
         {
             Console.WriteLine($"{choice.Key}: {choice.Value}");
         }
-        Console.Write("\n");
     }
 
     public void ProcessUserSelection()
@@ -32,7 +32,7 @@ public class Menu
         int parsedSelection;
         do
         {
-            Console.Write("[?] Enter your choice: ");
+            Console.Write("\n[?] Enter your choice: ");
             string selection = Console.ReadLine();
 
             if (!int.TryParse(selection, out parsedSelection))
@@ -41,15 +41,14 @@ public class Menu
                 continue;
             }
 
+            if (parsedSelection == 69)
+            {
+                break;
+            }
+
             if (!possibleChoices.ContainsKey(parsedSelection))
             {
                 Console.WriteLine("[!] Invalid input. Please choose from the available options.");
-            }
-
-            if (parsedSelection == 69)
-            {
-                Console.Clear();
-                break;
             }
 
         } while (!possibleChoices.ContainsKey(parsedSelection));
@@ -79,7 +78,7 @@ public class Menu
         while (isToBeContinued)
         {
             Console.Write("\n[?] Do you want to try another option? (Y/N): ");
-            decision = Console.ReadLine().ToLower(); // Convert to lowercase immediately
+            decision = Console.ReadLine().ToLower(); // Convert to lowercase
 
             if (decision.Equals("y"))
             {
@@ -90,7 +89,9 @@ public class Menu
             }
             else if (decision.Equals("n"))
             {
-                Console.WriteLine("\nThanks for using the DevOps Web Scraper! :)");
+                Console.Clear();
+                Console.WriteLine("\n[i] Thank you for using the DevOps Web Scraper! :)\n");
+                Console.WriteLine(FiggleFonts.Rectangles.Render("Thank You!"));
                 isToBeContinued = false; // Stop the loop from continuing
             }
             else

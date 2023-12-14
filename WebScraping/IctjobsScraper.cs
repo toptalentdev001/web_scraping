@@ -13,8 +13,6 @@ namespace WebScraping
 {
     public class IctjobsScraper
     {
-     
-        public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
         public static List<Job> jobsList = new List<Job>();
         public static List<string> jobDetails = new List<string>
         {
@@ -33,7 +31,7 @@ namespace WebScraping
 
             do
             {
-                Console.Write("\nEnter a search term (Ictjobs.be): ");
+                Console.Write("\n[?] Enter a search term (Ictjobs.be): ");
                 searchTerm = Console.ReadLine();
 
             } while (string.IsNullOrEmpty(searchTerm) || string.IsNullOrWhiteSpace(searchTerm));
@@ -58,7 +56,7 @@ namespace WebScraping
             return extractedTexts;
         }
 
-        public static List<string> GetJobTitles()
+        public static List<string> GetJobTitles(IWebDriver driver)
         {
             var jobs = driver.FindElements(By.ClassName("job-title"));
             var jobTitles = ExtractElements(jobs, 5);
@@ -66,7 +64,7 @@ namespace WebScraping
             return jobTitles;
         }
 
-        public static List<string> GetJobCompanies()
+        public static List<string> GetJobCompanies(IWebDriver driver)
         {
             var companies = driver.FindElements(By.ClassName("job-company"));
             var jobCompanies = ExtractElements(companies, 5);
@@ -74,7 +72,7 @@ namespace WebScraping
             return jobCompanies;
         }
 
-        public static List<string> GetJobLocations()
+        public static List<string> GetJobLocations(IWebDriver driver)
         {
             var locations = driver.FindElements(By.XPath("//span[contains(@itemprop, 'addressLocality')]"));
             var jobLocations = ExtractElements(locations, 5);
@@ -82,7 +80,7 @@ namespace WebScraping
             return jobLocations;
         }
 
-        public static List<string> GetJobDates()
+        public static List<string> GetJobDates(IWebDriver driver)
         {
             var dates = driver.FindElements(By.XPath("//span[contains(@itemprop, 'datePosted')]"));
             var jobDates = ExtractElements(dates, 5);
@@ -90,7 +88,7 @@ namespace WebScraping
             return jobDates;
         }
 
-        public static List<string> GetJobUrls()
+        public static List<string> GetJobUrls(IWebDriver driver)
         {
             var urls = driver.FindElements(By.CssSelector(".job-title.search-item-link"));
             List<string> jobUrls = new List<string>();
@@ -115,8 +113,10 @@ namespace WebScraping
 
         public static void ScrapeJobs()
         {
+            IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
             string jobSearchTerm = GetSearchTerm();
             driver.Navigate().GoToUrl($"https://www.ictjob.be/en/search-it-jobs?keywords={jobSearchTerm}");
+            driver.Navigate().Refresh();
 
             IWebElement cookieButton = driver.FindElement(By.CssSelector(".button.cookie-layer-button.close-layer-button"));
             IWebElement sortByDateButton = driver.FindElement(By.XPath("//*[@id=\"sort-by-date\"]"));
@@ -125,11 +125,11 @@ namespace WebScraping
             sortByDateButton.Click();
             Thread.Sleep(TimeSpan.FromSeconds(10));
 
-            var vacancies = GetJobTitles();
-            var hiringOrganizations = GetJobCompanies();
-            var vacancyLocations = GetJobLocations();
-            var vacancyUrls = GetJobUrls();
-            var datesPosted = GetJobDates();
+            var vacancies = GetJobTitles(driver);
+            var hiringOrganizations = GetJobCompanies(driver);
+            var vacancyLocations = GetJobLocations(driver);
+            var vacancyUrls = GetJobUrls(driver);
+            var datesPosted = GetJobDates(driver);
 
             for (int i = 0; i < 5; i++)
             {
@@ -155,6 +155,9 @@ namespace WebScraping
 
             // Create CSV 
             ExportCsv.CreateCsvFile("jobs.csv", jobsList, jobDetails);
+
+            // Quit driver
+            WebDriverFactory.QuitDriver(driver);
         }
     }
 }

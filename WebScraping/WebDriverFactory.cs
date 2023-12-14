@@ -10,24 +10,34 @@ namespace WebScraping
 {
     public class WebDriverFactory
     {
+        private static IWebDriver ?driver;
+
         public static IWebDriver InitializeChromeDriver()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArguments("--headless", "--silent", "log-level=3");
+            chromeOptions.AddArguments("--silent", "log-level=3");
 
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             chromeDriverService.SuppressInitialDiagnosticInformation = true;
             chromeDriverService.EnableVerboseLogging = false;
+            driver = new ChromeDriver(chromeDriverService, chromeOptions);
 
-            return new ChromeDriver(chromeDriverService, chromeOptions);
+            return driver;
         }
 
         public static void QuitDriver(IWebDriver driver)
         {
             if (driver != null)
             {
-                driver.Quit();
+                try
+                {
+                    driver.Quit();
+                }
+                finally
+                {
+                    driver = null;
+                }
             }
         }
     }

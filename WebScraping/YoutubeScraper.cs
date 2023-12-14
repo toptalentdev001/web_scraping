@@ -4,7 +4,6 @@ namespace WebScraping
 {
     public class YoutubeScraper
     {
-        public static IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
         public static List<Video> videoList = new List<Video>();
         public static List<string> videoDetails = new List<string>
         {
@@ -23,7 +22,7 @@ namespace WebScraping
 
             do
             {
-                Console.Write("\nEnter a search term (Youtube): ");
+                Console.Write("\n[?] Enter a search term (Youtube): ");
                 searchTerm = Console.ReadLine();
 
             } while (string.IsNullOrEmpty(searchTerm) && string.IsNullOrWhiteSpace(searchTerm));
@@ -48,7 +47,7 @@ namespace WebScraping
             return extractedTexts;
         }
 
-        public static List<string> GetVideoTitles()
+        public static List<string> GetVideoTitles(IWebDriver driver)
         {
             var videos = driver.FindElements(By.Id("video-title"));
             List<string> videoTitles = ExtractElements(videos, 5);
@@ -56,7 +55,7 @@ namespace WebScraping
             return videoTitles;
         }
 
-        public static List<string> GetVideoAuthors()
+        public static List<string> GetVideoAuthors(IWebDriver driver)
         {
             var channels = driver.FindElements(By.CssSelector(".yt-simple-endpoint.style-scope.yt-formatted-string"));
             List<string> authors = ExtractElements(channels, 5);
@@ -64,7 +63,7 @@ namespace WebScraping
             return authors;
         }
 
-        public static List<string> GetVideoUrls()
+        public static List<string> GetVideoUrls(IWebDriver driver)
         {
             var urls = driver.FindElements(By.CssSelector(".yt-simple-endpoint.inline-block.style-scope.ytd-thumbnail"));
             List<string> videoUrls = new List<string>();
@@ -82,7 +81,7 @@ namespace WebScraping
             return videoUrls;
         }
 
-        public static List<string> GetVideoViews()
+        public static List<string> GetVideoViews(IWebDriver driver)
         {
             var views = driver.FindElements(By.CssSelector(".inline-metadata-item.style-scope.ytd-video-meta-block"));
             List<string> videoViews = new List<string>();
@@ -103,7 +102,7 @@ namespace WebScraping
             return videoViews;
         }
 
-        public static List<string> GetVideoUploadTimes()
+        public static List<string> GetVideoUploadTimes(IWebDriver driver)
         {
             var views = driver.FindElements(By.CssSelector(".inline-metadata-item.style-scope.ytd-video-meta-block"));
             List<string> videoUploadTimestamps = new List<string>();
@@ -130,6 +129,7 @@ namespace WebScraping
 
         public static void ScrapeVideos()
         {
+            IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
             string youtubeSearchTerm = GetSearchTerm();
 
             // Most popular search results
@@ -138,11 +138,11 @@ namespace WebScraping
             // Most recent search results
             //driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}&sp=CAI%253D");
 
-            var videoTitles = GetVideoTitles();
-            var videoViews = GetVideoViews();
-            var videoAuthors = GetVideoAuthors();
-            var videoUploadTimes = GetVideoUploadTimes();
-            var videoUrls = GetVideoUrls();
+            var videoTitles = GetVideoTitles(driver);
+            var videoViews = GetVideoViews(driver);
+            var videoAuthors = GetVideoAuthors(driver);
+            var videoUploadTimes = GetVideoUploadTimes(driver);
+            var videoUrls = GetVideoUrls(driver);
 
             for (int i = 0; i < 5; i++)
             {
@@ -165,7 +165,10 @@ namespace WebScraping
             }
 
             // Save data to CSV file
-                ExportCsv.CreateCsvFile("videos.csv", videoList, videoDetails);
+            ExportCsv.CreateCsvFile("videos.csv", videoList, videoDetails);
+
+            // Quit driver
+            WebDriverFactory.QuitDriver(driver);
         }
     }
 }

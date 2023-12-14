@@ -1,5 +1,6 @@
 ﻿using System;
 using QRCoder;
+using Figgle;
 
 namespace WebScraping;
 
@@ -13,7 +14,7 @@ internal class QrCode
         string qrCodeAscii = GenerateQRCode(inputText);
 
         // Display QR code in the console
-        Console.WriteLine("\n\n\n!!!!!! Scan this super secure QR Code, 100% totally not a virus !!!!!");
+        Console.WriteLine("\n\n!!!!!! Scan this super secure QR Code, 100% totally not a virus !!!!!");
         Console.WriteLine(qrCodeAscii);
     }
 
@@ -30,6 +31,28 @@ internal class QrCode
     // Ask for menu
     public static void PrintQRCode()
     {
+        Console.WriteLine("Konami (Arrow keys): ");
+
+        ConsoleKey[] konamiCode = {
+            ConsoleKey.UpArrow, ConsoleKey.UpArrow,
+            ConsoleKey.DownArrow, ConsoleKey.DownArrow,
+            ConsoleKey.LeftArrow, ConsoleKey.RightArrow,
+            ConsoleKey.LeftArrow, ConsoleKey.RightArrow,
+            ConsoleKey.B, ConsoleKey.A
+        };
+
+        ConsoleKeyInfo[] userInput = new ConsoleKeyInfo[konamiCode.Length];
+
+        for (int i = 0; i < konamiCode.Length; i++)
+        {
+            userInput[i] = Console.ReadKey(true);
+            if (userInput[i].Key != konamiCode[i])
+            {
+                Console.WriteLine("\nIncorrect code. Try again.");
+                return;
+            }
+        }
+
         // Console Write QR code
         WriteQrCode();
     }
