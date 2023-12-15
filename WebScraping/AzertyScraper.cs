@@ -169,7 +169,8 @@ public class AzertyScraper
         showProducts();
 
         // Create CSV file from products
-        ExportCsv.CreateCsvFile("products.csv", productList, productDetails);
+        ExportCsv.CreateCsvFile("products", productList, productDetails);
+        ExportJson.CreateJsonFile("products", productList, productDetails);
 
         // Quit driver
         WebDriverFactory.QuitDriver(driver);

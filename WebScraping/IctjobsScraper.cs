@@ -157,7 +157,8 @@ namespace WebScraping
             }
 
             // Create CSV 
-            ExportCsv.CreateCsvFile("jobs.csv", jobsList, jobDetails);
+            ExportCsv.CreateCsvFile("jobs", jobsList, jobDetails);
+            ExportJson.CreateJsonFile("jobs", jobsList, jobDetails);
 
             // Quit driver
             WebDriverFactory.QuitDriver(driver);

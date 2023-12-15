@@ -202,7 +202,8 @@ namespace WebScraping
             }
 
             // Save data to CSV file
-            //ExportCsv.CreateCsvFile("videos.csv", videoList, videoDetails);
+            ExportCsv.CreateCsvFile("videos", videoList, videoDetails);
+            ExportJson.CreateJsonFile("videos", videoList, videoDetails);
 
             // Quit driver
             WebDriverFactory.QuitDriver(driver);

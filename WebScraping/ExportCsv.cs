@@ -10,7 +10,7 @@ namespace WebScraping
         public static void CreateCsvFile<T>(string name, List<T> objectsList, List<string> fieldsList)
         {
             //filePath = Path.GetFullPath(filePath);
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\" + name;
+            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\webscraping\\" + name + ".csv";
 
             using (var writer = new StreamWriter(filePath))
             using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
@@ -43,6 +43,8 @@ namespace WebScraping
                     csvWriter.WriteRecord(dynamicObject);
                 }
             }
+
+            Console.WriteLine("\nCSV file exported successfully.");
         }
     }
 }
