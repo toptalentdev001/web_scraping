@@ -82,8 +82,15 @@ public class Menu
 
             if (decision.Equals("y"))
             {
+                Console.Clear();
+
+                // Hello message
+                Console.WriteLine(FiggleFonts.Standard.Render("DevOps Webscraper v2.0"));
+                Console.WriteLine("\n----- [i] Welcome to the DevOps Web Scraper! -----\n");
+
                 // Reset userChoice before processing the selection again
                 userChoice = "";
+                
                 Display();
                 ProcessUserSelection();
             }

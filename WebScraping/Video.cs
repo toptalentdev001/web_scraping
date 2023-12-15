@@ -11,6 +11,7 @@ namespace WebScraping
         private string viewCount;
         private string uploadTimestamp;
         private string url;
+        private string thumbnail;
 
         public Video() {}
 
@@ -42,6 +43,12 @@ namespace WebScraping
         {
             get { return url; }
             set { url = value; }
+        }
+
+        public string Thumbnail
+        { 
+            get { return thumbnail; }
+            set {  thumbnail = value; }
         }
     }
 }

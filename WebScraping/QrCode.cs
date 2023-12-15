@@ -31,7 +31,7 @@ internal class QrCode
     // Ask for menu
     public static void PrintQRCode()
     {
-        Console.WriteLine("Konami (Arrow keys): ");
+        Console.Write("\n[?] Konami code (Arrow keys): ");
 
         ConsoleKey[] konamiCode = {
             ConsoleKey.UpArrow, ConsoleKey.UpArrow,
@@ -54,6 +54,7 @@ internal class QrCode
         }
 
         // Console Write QR code
+        Console.Clear();
         WriteQrCode();
     }
 }

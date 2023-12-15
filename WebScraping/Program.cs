@@ -10,9 +10,8 @@ public static class HelloSelenium
     public static void Main()
     {
         // Configure command prompt
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
         Console.Title = "DevOps WebScraper v2.0";
-        Console.SetWindowSize(Console.LargestWindowWidth - 10, Console.LargestWindowHeight - 10);
-        Console.SetWindowPosition(0, 0);
 
         // Hello message
         Console.WriteLine(FiggleFonts.Standard.Render("DevOps Webscraper v2.0"));

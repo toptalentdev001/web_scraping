@@ -1,4 +1,7 @@
 ﻿using OpenQA.Selenium;
+using static QRCoder.PayloadGenerator;
+using System.Text.RegularExpressions;
+using static System.Net.WebRequestMethods;
 
 namespace WebScraping
 {
@@ -11,7 +14,8 @@ namespace WebScraping
             "Author",
             "ViewCount",
             "UploadTimestamp",
-            "Url"
+            "Url",
+            "Thumbnail"
         };
 
         public YoutubeScraper() { }
@@ -27,7 +31,7 @@ namespace WebScraping
 
             } while (string.IsNullOrEmpty(searchTerm) && string.IsNullOrWhiteSpace(searchTerm));
 
-            Console.WriteLine($"\nSearching for \"{searchTerm}\" on Youtube ...\n");
+            Console.WriteLine($"\n[i] Searching for \"{searchTerm}\" on Youtube ...\n");
 
             // Encode special characters
             searchTerm = Uri.EscapeDataString(searchTerm);
@@ -77,7 +81,13 @@ namespace WebScraping
 
                 if (videoUrl != null)
                 {
-                    videoUrls.Add(videoUrl);
+                    // Define the regular expression pattern
+                    string pattern = @"&pp=[^&]+";
+
+                    // Use Regex.Replace to remove the matched substring
+                    string videoLink = Regex.Replace(videoUrl, pattern, "");
+
+                    videoUrls.Add(videoLink);
                 }
             }
 
@@ -125,6 +135,7 @@ namespace WebScraping
 
             return videoUploadTimestamps;
         }
+
         public static void AddVideosToList(Video video)
         {
             videoList.Add(video);
@@ -146,6 +157,27 @@ namespace WebScraping
             var videoAuthors = GetVideoAuthors(driver);
             var videoUploadTimes = GetVideoUploadTimes(driver);
             var videoUrls = GetVideoUrls(driver);
+            List<string> videoThumbnails = new();
+            
+            // Add thumbnails
+            for (int i = 0; i < 5; i++)
+            {
+                var url = videoUrls[i];
+                string pattern = @"(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})";
+                
+                // Use Regex.Match to find the first match
+                Match match = Regex.Match(url, pattern);
+
+                if (match.Success)
+                {
+                    // Extract the video ID from the match
+                    string videoId = match.Groups[1].Value;
+
+                    // Display the extracted video ID
+                    string videoThumbnailUrl = $"https://i.ytimg.com/vi/{videoId}/hq720.jpg";
+                    videoThumbnails.Add(videoThumbnailUrl);
+                }
+            }
 
             for (int i = 0; i < 5; i++)
             {
@@ -154,7 +186,8 @@ namespace WebScraping
                 Console.WriteLine($"| Views: {videoViews[i]}");
                 Console.WriteLine($"| Geüpload: {videoUploadTimes[i]}");
                 Console.WriteLine($"| URL: {videoUrls[i]}");
-                Console.WriteLine($"*---------------------------------------------*\n");
+                Console.WriteLine($"| Thumbnail: {videoThumbnails[i]}");
+                Console.WriteLine($"*---------------------------------------------*");
 
                 // Create Video objects and add to list
                 Video CurrentVideo = new Video();
@@ -163,12 +196,13 @@ namespace WebScraping
                 CurrentVideo.ViewCount = videoViews[i];
                 CurrentVideo.UploadTimestamp = videoUploadTimes[i];
                 CurrentVideo.Url = videoUrls[i];
+                CurrentVideo.Thumbnail = videoThumbnails[i];
 
                 AddVideosToList(CurrentVideo);
             }
 
             // Save data to CSV file
-            ExportCsv.CreateCsvFile("videos.csv", videoList, videoDetails);
+            //ExportCsv.CreateCsvFile("videos.csv", videoList, videoDetails);
 
             // Quit driver
             WebDriverFactory.QuitDriver(driver);
