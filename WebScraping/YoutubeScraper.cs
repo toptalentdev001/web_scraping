@@ -152,12 +152,15 @@ namespace WebScraping
             // Most recent search results
             //driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}&sp=CAI%253D");
 
-            // Find the reels element to remove
-            IWebElement reelsDiv = driver.FindElement(By.CssSelector("ytd-reel-shelf-renderer.style-scope.ytd-item-section-renderer"));
+            try
+            {
+                // Find the reels element to remove
+                IWebElement reelsDiv = driver.FindElement(By.CssSelector("ytd-reel-shelf-renderer.style-scope.ytd-item-section-renderer"));
 
-            // Execute JavaScript to remove the div element from the DOM
-            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
-            jsExecutor.ExecuteScript("arguments[0].parentNode.removeChild(arguments[0]);", reelsDiv);
+                // Execute JavaScript to remove the div element from the DOM
+                IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+                jsExecutor.ExecuteScript("arguments[0].parentNode.removeChild(arguments[0]);", reelsDiv);
+            } catch (OpenQA.Selenium.NoSuchElementException ex) {}
 
             var videoTitles = GetVideoTitles(driver);
             var videoViews = GetVideoViews(driver);
