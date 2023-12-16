@@ -11,7 +11,7 @@ namespace WebScraping
         private string title;
         private string company;
         private string location;
-        private List<string> keywords;
+        private string keywords;
         private string detailsUrl;
         private string datePosted;
         private string organizationImage;
@@ -21,7 +21,7 @@ namespace WebScraping
         public string Title { get => title; set => title = value; }
         public string Company { get => company; set => company = value; }
         public string Location { get  => location; set => location = value; }
-        public List<string> Keywords { get => keywords; set => keywords = value; }
+        public string Keywords { get => keywords; set => keywords = value; }
         public string DetailsUrl { get => detailsUrl; set => detailsUrl = value; }
         public string DatePosted { get => datePosted; set => datePosted = value; }
         public string OrganizationImage { get => organizationImage; set => organizationImage = value; }

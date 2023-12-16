@@ -21,6 +21,7 @@ namespace WebScraping
             "Company",
             "Location",
             "DatePosted",
+            "Keywords",
             "DetailsUrl",
             "OrganizationImage"
         };
@@ -93,6 +94,14 @@ namespace WebScraping
             return jobDates;
         }
 
+        public static List<string> GetJobKeywords(IWebDriver driver)
+        {
+            var keywords = driver.FindElements(By.CssSelector("span.job-keywords"));
+            var jobKeywords = ExtractElements(keywords, 5);
+
+            return jobKeywords;
+        }
+
         public static List<string> GetJobUrls(IWebDriver driver)
         {
             var urls = driver.FindElements(By.CssSelector(".job-title.search-item-link"));
@@ -140,20 +149,23 @@ namespace WebScraping
             IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
             string jobSearchTerm = GetSearchTerm();
             driver.Navigate().GoToUrl($"https://www.ictjob.be/en/search-it-jobs?keywords={jobSearchTerm}");
-            driver.Navigate().Refresh();
+            //driver.Navigate().Refresh();
 
             IWebElement cookieButton = driver.FindElement(By.CssSelector(".button.cookie-layer-button.close-layer-button"));
             IWebElement sortByDateButton = driver.FindElement(By.XPath("//*[@id=\"sort-by-date\"]"));
 
             cookieButton.Click();
             sortByDateButton.Click();
-            Thread.Sleep(TimeSpan.FromSeconds(10));
+
+            // Wait for stale element reference
+            Thread.Sleep(TimeSpan.FromSeconds(1));
 
             var vacancies = GetJobTitles(driver);
             var hiringOrganizations = GetJobCompanies(driver);
             var vacancyLocations = GetJobLocations(driver);
             var vacancyUrls = GetJobUrls(driver);
             var datesPosted = GetJobDates(driver);
+            var jobKeywords = GetJobKeywords(driver);
             var OrganizationImages = GetOrganizationImages(driver);
 
             for (int i = 0; i < 5; i++)
@@ -162,7 +174,8 @@ namespace WebScraping
                 Console.WriteLine($"| {vacancies[i]}");
                 Console.WriteLine($"| @ {hiringOrganizations[i]}");
                 Console.WriteLine($"| in {vacancyLocations[i]}");
-                Console.WriteLine($"| posted on {datesPosted[i]}");
+                Console.WriteLine($"| posted on: {datesPosted[i]}");
+                Console.WriteLine($"| Keywords: {jobKeywords[i]}");
                 Console.WriteLine($"| URL: {vacancyUrls[i]}");
                 Console.WriteLine($"| Image: {OrganizationImages[i]}");
                 Console.WriteLine($"*---------------------------------------------*\n");
@@ -174,6 +187,7 @@ namespace WebScraping
                 jobOpportunity.Location = vacancyLocations[i];
                 jobOpportunity.DatePosted = datesPosted[i];
                 jobOpportunity.DetailsUrl = vacancyUrls[i];
+                jobOpportunity.Keywords = jobKeywords[i];
                 jobOpportunity.OrganizationImage = OrganizationImages[i];
 
                 // Add Jobs to list of jobs

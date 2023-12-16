@@ -44,7 +44,7 @@ namespace WebScraping
                 }
             }
 
-            Console.WriteLine("\nCSV file exported successfully.");
+            Console.WriteLine("CSV file exported successfully.");
         }
     }
 }
