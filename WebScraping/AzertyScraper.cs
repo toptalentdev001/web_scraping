@@ -44,7 +44,9 @@ public class AzertyScraper
     {
         IWebElement productName = cardElement.FindElement(By.CssSelector(".product-item-link"));
 
-        return productName.Text;
+        string name = Regex.Replace(productName.Text, @"\s-\s\w+$", "");
+
+        return name;
     }
 
     public static string GetProductDescription(IWebElement cardElement)

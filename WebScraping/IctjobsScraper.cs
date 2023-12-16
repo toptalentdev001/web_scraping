@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace WebScraping
@@ -20,7 +21,8 @@ namespace WebScraping
             "Company",
             "Location",
             "DatePosted",
-            "DetailsUrl"
+            "DetailsUrl",
+            "OrganizationImage"
         };
 
         public IctjobsScraper() {}
@@ -109,6 +111,25 @@ namespace WebScraping
             return jobUrls;
         }
 
+        public static List<string> GetOrganizationImages(IWebDriver driver)
+        {
+            var images = driver.FindElements(By.CssSelector(".search-item-logo.company-logo-small"));
+            List<string> organizationImages = new List<string>();
+
+            for (int i = 0; organizationImages.Count < 5; i++)
+            {
+                var smallImageUrl = images[i].GetAttribute("src");
+
+                if (smallImageUrl != null)
+                {
+                    string imageUrl = Regex.Replace(smallImageUrl, @"\.small\.png$", "");
+                    organizationImages.Add(imageUrl);
+                }
+            }
+
+            return organizationImages;
+        }
+
         public static void AddJobsToList(Job job)
         {
             jobsList.Add(job);
@@ -133,6 +154,7 @@ namespace WebScraping
             var vacancyLocations = GetJobLocations(driver);
             var vacancyUrls = GetJobUrls(driver);
             var datesPosted = GetJobDates(driver);
+            var OrganizationImages = GetOrganizationImages(driver);
 
             for (int i = 0; i < 5; i++)
             {
@@ -142,6 +164,7 @@ namespace WebScraping
                 Console.WriteLine($"| in {vacancyLocations[i]}");
                 Console.WriteLine($"| posted on {datesPosted[i]}");
                 Console.WriteLine($"| URL: {vacancyUrls[i]}");
+                Console.WriteLine($"| Image: {OrganizationImages[i]}");
                 Console.WriteLine($"*---------------------------------------------*\n");
 
                 // Create Job objects
@@ -151,6 +174,7 @@ namespace WebScraping
                 jobOpportunity.Location = vacancyLocations[i];
                 jobOpportunity.DatePosted = datesPosted[i];
                 jobOpportunity.DetailsUrl = vacancyUrls[i];
+                jobOpportunity.OrganizationImage = OrganizationImages[i];
 
                 // Add Jobs to list of jobs
                 AddJobsToList(jobOpportunity);
