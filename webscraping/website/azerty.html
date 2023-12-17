@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data Visualization</title>
+    <link href="img/favicon.ico" rel="icon" type="image/x-icon" />
+    <!-- Include Tailwind CSS stylesheet -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-['Open_Sans']">
+    <div class="container mx-auto p-8">
+        <header class="h-[10vh]">
+            <h1 class="text-3xl font-bold mb-8"><span class="me-4"><img src="img/azerty.svg"
+                        class="inline w-24"></span>Azerty.nl
+                Data</h1>
+            <nav>
+                <ul class="flex flex-row">
+                    <li class="mr-6"><a href="index.html"
+                            class="text-blue-600 hover:text-blue-900 hover:underline">Home</a></li>
+                    <li class="mr-6"><a href="youtube.html"
+                            class="text-blue-600 hover:text-blue-900 hover:underline">Youtube</a></li>
+                    <li class="mr-6"><a href="ictjob.html"
+                            class="text-blue-600 hover:text-blue-900 hover:underline">Ictjob</a></li>
+                    <li class="mr-6"><a href="azerty.html"
+                            class="text-blue-600 hover:text-blue-900 hover:underline">Azerty</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="mt-8">
+            <div id="cards" class="cards grid grid-cols-3 gap-10"></div>
+        </main>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fetch JSON data
+        fetch('../products.json')
+            .then(response => response.json())
+            .then(data => {
+                // Handle each item in the JSON array
+                data.forEach(item => {
+                    // Create a card element
+                    const card = document.createElement('div');
+                    card.className = 'card bg-white p-4 rounded shadow-md h-[35rem]';
+
+                    // Create card content using data from JSON
+                    card.innerHTML = `
+                                        <div class="h-[20rem]">
+                                            <img src="${item.imageUrl}" alt="${item.title}" class="object-contain object-center h-full w-full rounded border border-gray-300 p-4">
+                                        </div>
+                                        <h2 class="font-bold mb-2 mt-4">${item.name}</h2>
+                                        <p class="text-xl font-medium my-2">€${item.price.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                        <p class="text-slate-700">${item.description}</p>
+                                        <p class="text-green-600 mt-2"><i class="fa-solid fa-clock me-3"></i>${item.deliveryTime}</p>
+                                        <a href="${item.url}" class="text-blue-600 hover:text-blue-900 hover:underline block mt-4"><i class="fa-solid fa-cart-shopping me-2"></i>Buy Now</a>
+                                    `;
+
+                    // Append the card to the cards container
+                    document.getElementById('cards').appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
+</script>
+
+</html>
