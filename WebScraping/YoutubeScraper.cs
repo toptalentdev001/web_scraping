@@ -94,6 +94,10 @@ namespace WebScraping
             return videoUrls;
         }
 
+        // Video views and upload times are both found using the same selector
+        // Views being found first made it easier to extract them based on the index
+        // If index == even => views : uploadTimes
+
         public static List<string> GetVideoViews(IWebDriver driver)
         {
             var views = driver.FindElements(By.CssSelector(".inline-metadata-item.style-scope.ytd-video-meta-block"));
@@ -136,45 +140,16 @@ namespace WebScraping
             return videoUploadTimestamps;
         }
 
-        public static void AddVideosToList(Video video)
+        public static List<string> GetVideoThumbnails(IWebDriver driver, List<string> videoUrlList)
         {
-            videoList.Add(video);
-        }
+            List<string> videoThumbs = new();
 
-        public static void ScrapeVideos()
-        {
-            IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
-            string youtubeSearchTerm = GetSearchTerm();
-
-            // Most popular search results
-            driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}");
-
-            // Most recent search results
-            //driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}&sp=CAI%253D");
-
-            try
-            {
-                // Find the reels element to remove
-                IWebElement reelsDiv = driver.FindElement(By.CssSelector("ytd-reel-shelf-renderer.style-scope.ytd-item-section-renderer"));
-
-                // Execute JavaScript to remove the div element from the DOM
-                IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
-                jsExecutor.ExecuteScript("arguments[0].parentNode.removeChild(arguments[0]);", reelsDiv);
-            } catch (OpenQA.Selenium.NoSuchElementException ex) {}
-
-            var videoTitles = GetVideoTitles(driver);
-            var videoViews = GetVideoViews(driver);
-            var videoAuthors = GetVideoAuthors(driver);
-            var videoUploadTimes = GetVideoUploadTimes(driver);
-            var videoUrls = GetVideoUrls(driver);
-            List<string> videoThumbnails = new();
-            
-            // Add thumbnails
+            // Create thumbnail url's based on video id
             for (int i = 0; i < 5; i++)
             {
-                var url = videoUrls[i];
-                string pattern = @"(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})";
-                
+                var url = videoUrlList[i];
+                string pattern = @"([a-zA-Z0-9_-]{11})";
+
                 // Use Regex.Match to find the first match
                 Match match = Regex.Match(url, pattern);
 
@@ -185,10 +160,52 @@ namespace WebScraping
 
                     // Display the extracted video ID
                     string videoThumbnailUrl = $"https://i.ytimg.com/vi/{videoId}/hq720.jpg";
-                    videoThumbnails.Add(videoThumbnailUrl);
+                    videoThumbs.Add(videoThumbnailUrl);
                 }
             }
 
+            return videoThumbs;
+        }
+
+        public static void DeleteShortsElements(IWebDriver driver)
+        {
+            try
+            {
+                // Find the reels element to remove
+                var shortsElements = driver.FindElements(By.CssSelector("ytd-reel-shelf-renderer.style-scope.ytd-item-section-renderer"));
+
+                foreach (var shortsShelf in shortsElements)
+                {
+                    // Execute JavaScript to remove the div element from the DOM
+                    IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+                    jsExecutor.ExecuteScript("arguments[0].parentNode.removeChild(arguments[0]);", shortsShelf);
+                }
+            }
+            catch (OpenQA.Selenium.NoSuchElementException ex) { }
+        }
+
+        public static void ScrapeVideos()
+        {
+            IWebDriver driver = WebDriverFactory.InitializeChromeDriver();
+            string youtubeSearchTerm = GetSearchTerm();
+
+            // Most relevant search results
+            driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}");
+
+            // Most recent search results
+            //driver.Navigate().GoToUrl($"https:www.youtube.com/results?search_query={youtubeSearchTerm}&sp=CAI%253D");
+
+            // Remove all shorts "display shelves"
+            DeleteShortsElements(driver);
+
+            // Scrape for videos
+            var videoTitles = GetVideoTitles(driver);
+            var videoViews = GetVideoViews(driver);
+            var videoAuthors = GetVideoAuthors(driver);
+            var videoUploadTimes = GetVideoUploadTimes(driver);
+            var videoUrls = GetVideoUrls(driver);
+            var videoThumbnails = GetVideoThumbnails(driver, videoUrls);
+            
             for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine($"*---------------------------------------------*");
@@ -208,7 +225,7 @@ namespace WebScraping
                 CurrentVideo.Url = videoUrls[i];
                 CurrentVideo.Thumbnail = videoThumbnails[i];
 
-                AddVideosToList(CurrentVideo);
+                videoList.Add(CurrentVideo);
             }
 
             // Save data to CSV file

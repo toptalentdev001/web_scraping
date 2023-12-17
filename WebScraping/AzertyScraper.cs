@@ -142,14 +142,14 @@ public class AzertyScraper
     private static void RefuseCookies(IWebDriver driver)
     {
         // Wait for banner animation (ease-in)
-        Thread.Sleep(3000);
+        Thread.Sleep(1000);
             
         // Find button and click on reject
         var cookieRefuseButton = driver.FindElement(By.Id("CybotCookiebotDialogBodyButtonDecline"));
         cookieRefuseButton.Click();
             
         // Wait for banner animation (ease-out)
-        Thread.Sleep(3000);
+        Thread.Sleep(1000);
     }
 
     public static void ScrapeProducts()
