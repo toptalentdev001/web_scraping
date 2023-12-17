@@ -1,0 +1,92 @@
+[
+  {
+    "title": "PHP Symfony Developer",
+    "company": "Isabel Group",
+    "location": "Berchem",
+    "datePosted": "15/12",
+    "keywords": "PHP, Symfony, Docker, React",
+    "detailsUrl": "https://www.ictjob.be/en/job/isabel-group-php-symfony-developer/9-170473",
+    "organizationImage": "https://www.ictjob.be/files/logo/384/isabel-1535459457882-en.png"
+  },
+  {
+    "title": "PHP Symfony Developer",
+    "company": "Le TEC",
+    "location": "Namur",
+    "datePosted": "15/12",
+    "keywords": "Symfony, PHP, Quality Management",
+    "detailsUrl": "https://www.ictjob.be/en/job/lead-technique-php-symfony-employee/3-231961",
+    "organizationImage": "https://www.ictjob.be/files/logo/Soci_t__R_gionale_Wallonne_Transport_SA_728615_1506428092_5568.png"
+  },
+  {
+    "title": "Lead Technique PHP / Symfony (employee)",
+    "company": "Vivid Resourcing",
+    "location": "Liège",
+    "datePosted": "14/12",
+    "keywords": "PHP Symfony Laravel Agency Liege",
+    "detailsUrl": "https://www.ictjob.be/en/job/vivid-resourcing-php-developer/5-214563",
+    "organizationImage": "https://www.ictjob.be/files/logo/Vivid_Resourcing_1400500711_1857.png"
+  },
+  {
+    "title": "Lead Technique PHP / Symfony (employee)",
+    "company": "Vivid Resourcing",
+    "location": "Brussels",
+    "datePosted": "13/12",
+    "keywords": "Webmaster, Web Manager Green Energy",
+    "detailsUrl": "https://www.ictjob.be/en/job/vivid-resourcing-webmaster-web-manager/2-259231",
+    "organizationImage": "https://www.ictjob.be/files/logo/Vivid_Resourcing_1400500711_1857.png"
+  },
+  {
+    "title": "PHP Developer",
+    "company": "Vivid Resourcing",
+    "location": "Grimbergen, Mechelen, Ghent, Sint-Niklaas",
+    "datePosted": "12/12",
+    "keywords": "Fullstack Developer Gaming",
+    "detailsUrl": "https://www.ictjob.be/en/job/vivid-resourcing-fullstack-dev-opportunity/1-275674",
+    "organizationImage": "https://www.ictjob.be/files/logo/Vivid_Resourcing_1400500711_1857.png"
+  },
+  {
+    "title": "Fullstack Opportunity (Data Product Scale-up)",
+    "company": "Vivid Resourcing",
+    "location": "Brugge, Waregem, Ieper, Roeselare, Ghent",
+    "datePosted": "15/12",
+    "keywords": ".NET, React, C#",
+    "detailsUrl": "https://www.ictjob.be/en/job/vivid-resourcing-fullstack-opportunity-data-product-scale/2-260552",
+    "organizationImage": "https://www.ictjob.be/files/logo/Vivid_Resourcing_1400500711_1857.png"
+  },
+  {
+    "title": "Fullstack Opportunity (Data Product Scale-up)",
+    "company": "CTG",
+    "location": "Brussels, Diegem, Antwerp",
+    "datePosted": "13/12",
+    "keywords": ".NET C# Azure SQL",
+    "detailsUrl": "https://www.ictjob.be/en/job/ctg-net-developer/27-141585",
+    "organizationImage": "https://www.ictjob.be/files/logo/290/ctg-1617098840101-en.png"
+  },
+  {
+    "title": ".NET Developer",
+    "company": "IT-Planet",
+    "location": "Ghent, Dunkerque",
+    "datePosted": "12/12",
+    "keywords": "Lead, .NET, C#, Agile, CI/CD, Azure",
+    "detailsUrl": "https://www.ictjob.be/en/job/it-planet-net-developer/1-275299",
+    "organizationImage": "https://www.ictjob.be/files/logo/34/it-planet-1637827737195-nl.png"
+  },
+  {
+    "title": ".NET Developer",
+    "company": "ITS Group Benelux",
+    "location": "Brussels",
+    "datePosted": "12/12",
+    "keywords": "React, Angular, Python, Stack C#",
+    "detailsUrl": "https://www.ictjob.be/en/job/group-benelux-fullstack-developer/1-275293",
+    "organizationImage": "https://www.ictjob.be/files/logo/ITS_Group_1317823283_1329.png"
+  },
+  {
+    "title": ".NET Developer",
+    "company": "Cossel",
+    "location": "Walloon Brabant, Brussels",
+    "datePosted": "11/12",
+    "keywords": ".NET C#",
+    "detailsUrl": "https://www.ictjob.be/en/job/cossel-developpeur-net/1-274728",
+    "organizationImage": "https://www.ictjob.be/files/logo/9288/cossel-1669886609491-fr.png"
+  }
+]

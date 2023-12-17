@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Gigabyte GeForce RTX 4060 GAMING OC 8G",
+    "price": 329.00,
+    "description": "8GB GDDR6 - PCIe 4.0 - 2x HDMI",
+    "deliveryTime": "Volgende werkdag in huis",
+    "url": "https://azerty.nl/product/gigabyte-geforce-rtx-4060-gaming-oc-8g-videokaart/5917753",
+    "imageUrl": "https://azerty.nl/media/catalog/product/t/J/tJUtjf.4917753_8c472c94abc958e7cf51896348f01b3d-0bb4cf9c.png"
+  },
+  {
+    "name": "MSI GeForce RTX 4060 VENTUS 2X BLACK 8G OC",
+    "price": 329.00,
+    "description": "8GB GDDR6 - PCIe 4.0 - 1 x HDMI",
+    "deliveryTime": "Volgende werkdag in huis",
+    "url": "https://azerty.nl/product/msi-geforce-rtx-4060-ventus-2x-black-8g-oc-videokaart/5917689",
+    "imageUrl": "https://azerty.nl/media/catalog/product/W/P/WPkEm0.4917689_021bbc7ee20b71134d53e20206bd6feb-0282ef31.png"
+  },
+  {
+    "name": "Gigabyte GeForce RTX 4060 WINDFORCE OC 8GB",
+    "price": 331.00,
+    "description": "8GB GDDR6 - PCIe 4.0 - 2 x HDMI",
+    "deliveryTime": "Volgende werkdag in huis",
+    "url": "https://azerty.nl/product/gigabyte-geforce-rtx-4060-windforce-oc-8g-videokaart/5917814",
+    "imageUrl": "https://azerty.nl/media/catalog/product/B/V/BVCfi9.d6aa7f82014c8400bbebb687a9414cbd-54281243_3.jpg"
+  },
+  {
+    "name": "INNO3D GEFORCE RTX 4060 TWIN X2 OC",
+    "price": 329.90,
+    "description": "8GB GDDR6 - PCIe 4.0 - 1 x HDMI",
+    "deliveryTime": "Volgende werkdag in huis",
+    "url": "https://azerty.nl/product/inno3d-geforce-rtx-4060-twin-x2-oc-videokaart/5946473",
+    "imageUrl": "https://azerty.nl/media/catalog/product/Y/o/YoJG8p.4946473_f6dfde99c77f77d7c768c788f4753ff9-1b3bdaf9.png"
+  },
+  {
+    "name": "Asus ProArt GeForce RTX 4060 OC Edition 8GB",
+    "price": 369.00,
+    "description": "8 GB GDDR6 - PCIe 4.0 - 1x HDMI 2.1a",
+    "deliveryTime": "Volgende werkdag in huis",
+    "url": "https://azerty.nl/product/asus-proart-geforce-rtx-4060-oc-edition-8gb-videokaart/6020884",
+    "imageUrl": "https://azerty.nl/media/catalog/product/M/i/Mi4Gi7.5020884_c360930915f230ce780d675295a3ae59-4fd3ee34.png"
+  }
+]
