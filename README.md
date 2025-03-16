@@ -7,9 +7,6 @@ This project is a web scraping tool written in C# that utilizes Selenium to extr
 ## Installation
 
 1.  Clone the repository:
-    
-    `git clone https://github.com/ahm282/WebScraping` 
-    
 2.  Ensure you have the required dependencies installed:
     
     -   [ChromeDriver](https://sites.google.com/chromium.org/driver/)
